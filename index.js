@@ -18,6 +18,6 @@ global.cache = new Map();
         dnssec: true
     });
     server.on('query', onQuery)
-    server.open(53, '0.0.0.0');
+    server.open(57, '0.0.0.0');
 
 })()

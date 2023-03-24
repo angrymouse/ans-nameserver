@@ -10,6 +10,7 @@
   "dependencies": {
     "bns-plus": "^0.15.2",
     "json5": "^2.2.1",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.0",
+    "undici": "^5.21.0"
   }
 }

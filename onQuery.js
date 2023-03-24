@@ -4,33 +4,47 @@ module.exports = async (req, res, rinfo) => {
 
     const [question] = req.question;
     let name = question.name.toLowerCase()
-    if (name.endsWith(config.zone)) {
-
+    if (config.zones.find(zone => name.endsWith(zone))) {
+        let zone = config.zones.find(zone => name.endsWith(zone))
         let nameInfo;
         try {
-            nameInfo = global.cache.get(name.slice(0, -config.zone.length))
+            let nameInContract = name.slice(0, -zone.length)
+            nameInfo = global.cache.get(nameInContract)
+
             if (!nameInfo) {
                 nameInfo = await contractQuery(config.nameContract, {
-                    "nft_info": {
-                        "token_id": name.slice(0, -config.zone.length)
-                    }
+                    function: "getDomainRecords",
+                    domain: nameInContract
                 })
-                global.cache.set(name.slice(0, -config.zone.length), nameInfo)
+                global.cache.set(nameInContract, nameInfo)
             }
 
-            let records = nameInfo?.data?.extension?.records || []
-            records = records.filter(record => ["ns1", "ns2", "ns3", "ns4"].includes(record.name))
-            // res.records.map()
-            records.forEach(record => {
+            let records = nameInfo
+            if (!records.data.execution.result) {
+                throw "No name found"
+            }
+            records.data.execution.result.A.forEach(aRecord => {
+
                 const rr = new wire.Record();
 
                 rr.name = name;
-                rr.type = wire.types.NS;
+                rr.type = wire.types.A;
                 rr.ttl = 3600;
-                rr.data = new wire.NSRecord();
-                rr.data.ns = record.value.endsWith(".") ? record.value : record.value + "."
-                res.authority.push(rr)
+                rr.data = new wire.ARecord();
+                rr.data.address = aRecord.value
+                res.answer.push(rr)
             })
+            // res.records.map()
+            // records.forEach(record => {
+            //     const rr = new wire.Record();
+
+            //     rr.name = name;
+            //     rr.type = wire.types.NS;
+            //     rr.ttl = 3600;
+            //     rr.data = new wire.NSRecord();
+            //     rr.data.ns = record.value.endsWith(".") ? record.value : record.value + "."
+            //     res.authority.push(rr)
+            // })
             res.send()
         } catch (e) {
             console.error(e)

@@ -1,5 +1,5 @@
 {
-    zone:".stars.",
-    restEndpoint:"https://rest.stargaze-apis.com/",
-    nameContract:"stars1fx74nkqkw2748av8j7ew7r3xt9cgjqduwn8m0ur5lhe49uhlsasszc5fhr"
+    zones:[".arweaver.",".arweavers."],
+    exmEndpoint:"exm.run/",
+    nameContract:"bhfy1ffgzkvylpn55j1zpzy8mihb9w_qh7vuwdgmbm0"
 }
