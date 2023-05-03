@@ -1,5 +1,6 @@
 {
+    port:53,
     zones:[".arweaver.",".arweavers."],
     exmEndpoint:"exm.run/",
-    nameContract:"bhfy1ffgzkvylpn55j1zpzy8mihb9w_qh7vuwdgmbm0"
+    nameContract:"rhir90vnc09kqq_cit10mtuhoqil2pdo0ptdz5s9-no"
 }

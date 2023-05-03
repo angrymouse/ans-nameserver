@@ -23,28 +23,22 @@ module.exports = async (req, res, rinfo) => {
             if (!records.data.execution.result) {
                 throw "No name found"
             }
-            records.data.execution.result.A.forEach(aRecord => {
 
+            let dnsrecords = records.data.execution.result?.records
+            console.log(dnsrecords)
+            dnsrecords.forEach(record => {
                 const rr = new wire.Record();
+                let fname = record.name == "@" ? name : record.name + "." + name
+                rr.name = fname
+                rr.type = wire.types[record.type]
 
-                rr.name = name;
-                rr.type = wire.types.A;
-                rr.ttl = 3600;
-                rr.data = new wire.ARecord();
-                rr.data.address = aRecord.value
+                rr.data = ({ "A": () => new wire.ARecord(), "TXT": () => new wire.TXTRecord(), "CNAME": () => new wire.CNAMERecord(), "AAAA": () => new wire.AAAARecord(), "MX": () => new wire.MXRecord() })[record.type]()
+
+                rr.data = record.value
                 res.answer.push(rr)
-            })
-            // res.records.map()
-            // records.forEach(record => {
-            //     const rr = new wire.Record();
 
-            //     rr.name = name;
-            //     rr.type = wire.types.NS;
-            //     rr.ttl = 3600;
-            //     rr.data = new wire.NSRecord();
-            //     rr.data.ns = record.value.endsWith(".") ? record.value : record.value + "."
-            //     res.authority.push(rr)
-            // })
+            })
+
             res.send()
         } catch (e) {
             console.error(e)
