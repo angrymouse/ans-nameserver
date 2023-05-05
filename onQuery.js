@@ -25,7 +25,7 @@ module.exports = async (req, res, rinfo) => {
             }
 
             let dnsrecords = records.data.execution.result?.records
-            console.log(dnsrecords)
+
             dnsrecords.forEach(record => {
                 const rr = new wire.Record();
                 let fname = record.name == "@" ? name : record.name + "." + name
@@ -34,7 +34,9 @@ module.exports = async (req, res, rinfo) => {
 
                 rr.data = ({ "A": () => new wire.ARecord(), "TXT": () => new wire.TXTRecord(), "CNAME": () => new wire.CNAMERecord(), "AAAA": () => new wire.AAAARecord(), "MX": () => new wire.MXRecord() })[record.type]()
 
-                rr.data = record.value
+                Object.entries(record.value).forEach((r) => {
+                    rr.data[r[0]] = r[1]
+                })
                 res.answer.push(rr)
 
             })
