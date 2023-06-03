@@ -1,11 +1,11 @@
 {
-  "name": "sg-nameserver",
-  "version": "1.0.0",
+  "name": "ans-nameserver",
+  "version": "0.0.1",
   "description": "Nameserver for .stars",
   "main": "index.js",
-  "repository": "https://github.com/angrymouse/sg-nameserver",
+  "repository": "https://github.com/decentldotland/ans-nameserver",
   "author": "Mouse <nik@hns.is>",
-  "license": "ISC",
+  "license": "MIT",
   "private": false,
   "dependencies": {
     "bns-plus": "^0.15.2",
